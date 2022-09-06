@@ -1,7 +1,11 @@
 export default {
 	title: "components/Panel/Accordion item",
 	parameters: {
-		component: "pelayo-accordion-item",
+		stencilDoc: {
+			component: "pelayo-accordion",
+			subComponent: "pelayo-tab",
+			componentInfo: "Opcionalmente puedes escribir una descripción del componente en la historia."
+		}
 	},
 	argTypes: {
 		indicatorLocation: {

@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "Generates the documentation page based on doc.json.",
   "keywords": [
-    "stencil", "webcomponent", "stencil", "webcomponent", "storybook-addons"
+    "stencil",
+    "webcomponent",
+    "stencil",
+    "webcomponent",
+    "storybook-addons"
   ],
   "repository": {
     "type": "git",
@@ -83,8 +87,12 @@
   "storybook": {
     "displayName": "no",
     "supportedFrameworks": [
-      "web-component", "html"
+      "web-component",
+      "html"
     ],
     "icon": "https://user-images.githubusercontent.com/321738/63501763-88dbf600-c4cc-11e9-96cd-94adadc2fd72.png"
+  },
+  "dependencies": {
+    "@storybook/addon-controls": "^6.5.10"
   }
 }

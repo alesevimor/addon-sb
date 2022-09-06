@@ -1,15 +1,24 @@
 import React from "react";
-import { useStorybookApi } from "@storybook/api";
-import { TabContent } from "../components/TabContent";
-import { StencilJsonDocs } from "../models/stencil-doc-model";
+import { Group, Story, useStorybookApi } from "@storybook/api";
+import { TabContent } from "../components/tab/TabContent";
+import { StencilJsonDocs } from "../models/stencil-doc";
 import { getStencilDocJson } from "../index";
 import { getCode, getDataFormat, getHeaders, getMetaData, mapEventsData, mapMethodsData, mapPropertiesData } from "../shared/helpers";
-import { TabProps } from "../models/tab-addon-model";
+import { Data, Options, TabComponentProps } from "src/models/tab-addon";
+import { Code, Meta } from "src/models/generic";
+import { HeadersTableProps } from "src/models/table";
+import { NoDataComponent } from "../components/error/no-data";
 
+/**
+ * Returns an object with an array for each table: events, methods and properties.
+ * @param tagName - Name of the tag that has to validate the getMetaData.
+ * @param StencilJsonDocs - Json doc by stencil.
+ * @param options - Addon Options.
+ */
 export const extractPropsFromElements = (
 	tagName: string,
 	StencilJsonDocs: StencilJsonDocs,
-	options: any
+	options: Options
 ): any => {
 	const metaData = getMetaData(tagName, StencilJsonDocs);
 	const dataFormat = metaData && getDataFormat(
@@ -23,22 +32,47 @@ export const extractPropsFromElements = (
 	);
 };
 
-export const Tab: React.FC<TabProps> = ({ active }) => {
-	let data, headers, code;
+/**
+ * Render the tab component of the addon.
+ * @param active - Render if active is true.
+ */
+export const Tab: React.FC<TabComponentProps> = ({ active }) => {
+	let data: Data, headers: HeadersTableProps, code: Code, meta: Meta, subComponentData: any;
 	const state = useStorybookApi();
-	const currentStoryData = state.getCurrentStoryData();
+	const currentStoryData: Story | Group = state.getCurrentStoryData();
 	const parameters: any = state.getCurrentParameter();
 
 	// Options
-	const options = {dashCase: false};
+	const options: Options = {dashCase: false};
 
-	if (parameters && currentStoryData) {
-		data = extractPropsFromElements(parameters.component, getStencilDocJson(), options);
-		headers = getHeaders(data) || null;
-		code = parameters.storySource && getCode(parameters.storySource.source.split('`')[1], parameters.component);
+	if (parameters && parameters.stencilDoc && currentStoryData) {
+		meta = {
+			name: currentStoryData.name || null,
+			component: parameters.stencilDoc.component || null,
+			subComponent: parameters.stencilDoc.subComponent || null,
+			componentInfo: parameters.stencilDoc.componentInfo || null,
+			source: parameters.storySource && parameters.storySource.source || null,
+			args: parameters.args || null
+		};
+
+		data = extractPropsFromElements(meta.component, getStencilDocJson(), options);
+		headers = data && getHeaders(data);
+		code = meta.source && getCode(meta.source.split('`')[1], meta.args);
+
+		if (meta.subComponent) {
+			const dataChild = extractPropsFromElements(meta.subComponent, getStencilDocJson(), options);
+			subComponentData = {
+				data: dataChild,
+				headers: getHeaders(dataChild),
+				meta: {
+					name: meta.subComponent || null,
+					component: meta.subComponent || null
+				}
+			};
+		}
 	}
 
 	return (active && data && headers && parameters && currentStoryData) ? (
-		<TabContent data={data} headers={headers} meta={currentStoryData} code={code} />
-	) : null;
+		<TabContent data={data} headers={headers} meta={meta} code={code} subComponent={subComponentData}/>
+	) : active ? <NoDataComponent /> : null;
 };
