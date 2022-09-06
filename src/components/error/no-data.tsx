@@ -7,7 +7,7 @@ const exampleParameters = `
 		stencilDoc: {
 			component: "pelayo-accordion",
 			subComponent: "pelayo-accordion-item",
-			componentInfo: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+			componentInfo: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
 		}
 	}
 `;
