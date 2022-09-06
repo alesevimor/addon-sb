@@ -1,0 +1,222 @@
+:host {
+  display: block;
+  margin: 0 0 var(--font-size-base);
+  position: relative;
+}
+
+@mixin accordion-toggle($color) {
+  background-color: $gray-light-25;
+  border: solid 1px $gray-light-15;
+  box-sizing: border-box;
+  color: $color;
+  cursor: pointer;
+  font-size: calc(var(--font-size-base) * 1.25);
+  font-weight: bold;
+  height: auto;
+  line-height: calc(var(--font-size-base) * 2.25);
+  min-height: calc(var(--font-size-base) * 2.5);
+  outline: none;
+  transition: color .15s ease-in-out;
+}
+
+@mixin accordion-toggle-icon {
+  background-color: $green-base;
+  color: $white;
+  line-height: 1.9em;
+  transition: background-color .15s ease-in-out;
+}
+
+@mixin toggle-indicator($background, $color, $content) {
+  align-items: center;
+  background-color: $background;
+  border: solid 1px $gray-light-15;
+  box-sizing: border-box;
+  color: $color;
+  content: $content;
+  display: flex;
+  font-family: pelayo-icon-font;
+  height: auto;
+  justify-content: center;
+  line-height: 1.9em;
+  min-height: calc(var(--font-size-base) * 2.5);
+  position: absolute;
+  top: 0;
+  width: calc(var(--font-size-base) * 2.5);
+}
+
+@mixin toggle-indicator-not-collapsed {
+  @include toggle-indicator($green-light-20, $white, '\e80c');
+}
+
+@mixin toggle-indicator-collapsed {
+  @include toggle-indicator(transparent, $blue-base, '\e80d');
+}
+
+.accordion-toggle-heading {
+  line-height: 1.9em;
+}
+
+:host(:not(.collapsed)) {
+  .accordion-toggle {
+    @include accordion-toggle($green-base);
+
+    &.toggle-indicator-left .accordion-toggle-heading {
+      align-items: center;
+      display: flex;
+      height: 100%;
+      padding: 0 calc(var(--font-size-base) * 3.25);
+    }
+
+    &.toggle-indicator-left:hover {
+      color: $green-base;
+
+      &::before {
+        @include accordion-toggle-icon;
+      }
+    }
+
+    &.toggle-indicator-right .accordion-toggle-heading {
+      align-items: center;
+      display: flex;
+      height: 100%;
+      padding: 0 var(--font-size-base);
+    }
+
+    &.toggle-indicator-right:hover {
+      color: $green-base;
+
+      &::after {
+        @include accordion-toggle-icon;
+      }
+    }
+
+    &.toggle-indicator-left::before {
+      @include toggle-indicator-not-collapsed;
+      left: 0;
+    }
+
+    &.toggle-indicator-right::after {
+      @include toggle-indicator-not-collapsed;
+      right: 0;
+    }
+  }
+}
+
+:host(.collapsed) {
+  .accordion-toggle {
+    @include accordion-toggle($gray-dark-15);
+
+    &.toggle-indicator-left .accordion-toggle-heading {
+      align-items: center;
+      display: flex;
+      height: 100%;
+      padding: 0 calc(var(--font-size-base) * 3.25);
+    }
+
+    &.toggle-indicator-left:hover {
+      color: $green-base;
+
+      &::before {
+        @include accordion-toggle-icon;
+      }
+    }
+
+    &.toggle-indicator-right .accordion-toggle-heading {
+      align-items: center;
+      display: flex;
+      height: 100%;
+      padding: 0 var(--font-size-base);
+    }
+
+    &.toggle-indicator-right:hover {
+      color: $green-base;
+
+      &::after {
+        @include accordion-toggle-icon;
+      }
+    }
+
+    &.toggle-indicator-left::before {
+      @include toggle-indicator-collapsed;
+      left: 0;
+    }
+
+    &.toggle-indicator-right::after {
+      @include toggle-indicator-collapsed;
+      right: 0;
+    }
+  }
+
+  .panel-collapse {
+    display: none;
+  }
+}
+
+.toggle-indicator-left {
+  ::slotted(.panel-heading) {
+    overflow: hidden;
+    padding: var(--font-size-base) var(--font-size-base) var(--font-size-base) calc(var(--font-size-base) * 3.25);
+  }
+}
+
+.toggle-indicator-right {
+  ::slotted(.panel-heading) {
+    overflow: hidden;
+    padding: var(--font-size-base);
+  }
+}
+
+.panel-body {
+  background: $white;
+  border: solid 1px $gray-light-15;
+  font-size: var(--font-size-base);
+  margin: -1px 0 0;
+  padding: var(--font-size-base);
+}
+
+:host .disabled .accordion-toggle {
+  color: $gray-dark-5;
+  cursor: auto;
+
+  &.toggle-indicator-left .accordion-toggle-heading {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    padding: 0 calc(var(--font-size-base) * 3.25);
+  }
+
+  &.toggle-indicator-left::before {
+    color: $blue-light-10;
+    left: 0;
+  }
+
+  &.toggle-indicator-right .accordion-toggle-heading {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    padding: 0 var(--font-size-base);
+  }
+
+  &.toggle-indicator-right::after {
+    color: $blue-light-10;
+    right: 0;
+  }
+
+  &.toggle-indicator-left:hover {
+    color: $gray-dark-5;
+
+    &::before {
+      background-color: transparent;
+      color: $blue-light-10;
+    }
+  }
+
+  &.toggle-indicator-right:hover {
+    color: $gray-dark-5;
+
+    &::after {
+      background-color: transparent;
+      color: $blue-light-10;
+    }
+  }
+}

@@ -60,6 +60,10 @@ interface ListItemProps {
   item: Item;
 }
 
+interface ListProps {
+  items: Item[];
+}
+
 export const ListItem: React.FC<ListItemProps> = ({ item }) => {
   const [open, onToggle] = useState(false);
 
@@ -81,10 +85,6 @@ export const ListItem: React.FC<ListItemProps> = ({ item }) => {
     </Fragment>
   );
 };
-
-interface ListProps {
-  items: Item[];
-}
 
 export const List: React.FC<ListProps> = ({ items }) => (
   <ListWrapper>

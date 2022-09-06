@@ -36,27 +36,27 @@ export const PanelContent: React.FC<PanelContentProps> = ({
       title="Overview"
       color={convert(themes.normal).color.positive}
     >
-      <Placeholder>
-        <Fragment>
-          Addons can gather details about how a story is rendered. This is panel
-          uses a tab pattern. Click the button below to fetch data for the other
-          two tabs.
-        </Fragment>
-        <Fragment>
-          <RequestDataButton
-            secondary
-            small
-            onClick={fetchData}
-            style={{ marginRight: 16 }}
-          >
-            Request data
-          </RequestDataButton>
+	<Placeholder>
+		<Fragment>
+		Addons can gather details about how a story is rendered. This is panel
+		uses a tab pattern. Click the button below to fetch data for the other
+		two tabs.
+		</Fragment>
+		<Fragment>
+		<RequestDataButton
+			secondary
+			small
+			onClick={fetchData}
+			style={{ marginRight: 16 }}
+		>
+			Request data
+		</RequestDataButton>
 
-          <RequestDataButton outline small onClick={clearData}>
-            Clear data
-          </RequestDataButton>
-        </Fragment>
-      </Placeholder>
+		<RequestDataButton outline small onClick={clearData}>
+			Clear data
+		</RequestDataButton>
+		</Fragment>
+	</Placeholder>
     </div>
     <div
       id="danger"
