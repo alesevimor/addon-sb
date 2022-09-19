@@ -1,5 +1,5 @@
 {
-  "name": "doc-stencil",
+  "name": "addon-stencil-doc",
   "version": "1.0.0",
   "description": "Generates the documentation page based on doc.json.",
   "keywords": [
@@ -13,9 +13,9 @@
     "type": "git",
     "url": "https://github.com/alesevimor/addon-storybook"
   },
-  "author": "Alejandro Sevillano",
+  "author": "Pelayo IT",
   "license": "MIT",
-  "main": "dist/cjs/index.js",
+  "main": "dist/preset.js",
   "module": "dist/esm/index.js",
   "types": "dist/ts/index.d.ts",
   "files": [
@@ -41,7 +41,8 @@
     "build-storybook": "build-storybook",
     "prerelease": "zx scripts/prepublish-checks.mjs",
     "release": "yarn build && auto shipit",
-    "eject-ts": "zx scripts/eject-typescript.mjs"
+    "eject-ts": "zx scripts/eject-typescript.mjs",
+    "publish": "concurrently \"npm run build\" \"zx scripts/packaging.mjs\""
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
@@ -50,9 +51,7 @@
     "@babel/preset-react": "^7.12.5",
     "@babel/preset-typescript": "^7.13.0",
     "@storybook/addon-essentials": "^6.5.8",
-    "@storybook/react": "^6.5.8",
     "auto": "^10.3.0",
-    "babel-loader": "^8.1.0",
     "boxen": "^5.0.1",
     "concurrently": "^6.2.0",
     "dedent": "^0.7.0",
@@ -64,13 +63,18 @@
     "typescript": "^4.2.4",
     "zx": "^1.14.1"
   },
-  "peerDependencies": {
+  "dependencies": {
     "@storybook/addons": "^6.5.8",
     "@storybook/api": "^6.5.8",
     "@storybook/components": "^6.5.8",
     "@storybook/core-events": "^6.5.8",
+    "@storybook/react": "^6.5.8",
+    "@storybook/source-loader": "^6.5.8",
     "@storybook/theming": "^6.5.8",
-    "react": "^16.8.0 || ^17.0.0",
+    "babel-loader": "^8.1.0"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
     "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
   },
   "peerDependenciesMeta": {
@@ -91,8 +95,5 @@
       "html"
     ],
     "icon": "https://user-images.githubusercontent.com/321738/63501763-88dbf600-c4cc-11e9-96cd-94adadc2fd72.png"
-  },
-  "dependencies": {
-    "@storybook/addon-controls": "^6.5.10"
   }
 }

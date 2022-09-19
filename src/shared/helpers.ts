@@ -155,12 +155,18 @@ export const getHeaders = (data: Data) => {
  * @param code - Returns an object with the html and the javascript code to print it in the source tab.
  */
 export const getCode = (code: string, args: any) => {
-	let html, js = '';
-
+	let html, js = '', selector;
 	if (code) {
 		let div = document.createElement('div');
 		div.innerHTML = code;
-		html = div.querySelector('#code-html') && div.querySelector('#code-html').innerHTML || '';
+		selector = div.querySelector('[data-stencil-doc="html"]');
+		if (selector) {
+			selector.removeAttribute('data-stencil-doc');
+			html = selector.outerHTML || '';
+		} else {
+			html = div.innerHTML || '';
+		}
+
 		js = div.querySelector('script') && div.querySelector('script').outerHTML || '';
 
 		if (args) {
@@ -169,9 +175,39 @@ export const getCode = (code: string, args: any) => {
 			}
 		}
 	}
-	
 	return {
 		html: html,
 		js: js
 	}
+};
+
+/**
+ * Returns an array with headers for the table.
+ * @param template - Returns an object with the html and the javascript code to print it in the source tab.
+ */
+export const getInfo = (template: string) => {
+	if(!template) { return ''; }
+	const selectorOpen = '<!--', selectorClose = '-->';
+	const startPosition = template.indexOf(selectorOpen) + 4;
+	const endPosition = template.indexOf(selectorClose);
+	if (startPosition===-1 || endPosition ===-1) {
+		return '';
+	}
+	return template.substring(startPosition, endPosition);
+};
+
+/**
+ * Returns an array with headers for the table.
+ * @param template - Returns an object with the html and the javascript code to print it in the source tab.
+ */
+ export const removeInfoTemplate = (template: string) => {
+	if (!template) { return ''; }
+	const selectorOpen = '<!--', selectorClose = '-->';
+	const startPosition = template.indexOf(selectorOpen);
+	const endPosition = template.indexOf(selectorClose);
+	if (startPosition===-1 || endPosition ===-1) {
+		return '';
+	}
+	const info = template.substring(startPosition, endPosition+3);
+	return template.replace(info, '');
 };

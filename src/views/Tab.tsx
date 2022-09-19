@@ -1,13 +1,14 @@
 import React from "react";
-import { Group, Story, useStorybookApi } from "@storybook/api";
+import { useParameter, useStorybookApi } from "@storybook/api";
 import { TabContent } from "../components/tab/TabContent";
 import { StencilJsonDocs } from "../models/stencil-doc";
 import { getStencilDocJson } from "../index";
-import { getCode, getDataFormat, getHeaders, getMetaData, mapEventsData, mapMethodsData, mapPropertiesData } from "../shared/helpers";
-import { Data, Options, TabComponentProps } from "src/models/tab-addon";
+import { getCode, getDataFormat, getHeaders, getInfo, getMetaData, mapEventsData, mapMethodsData, mapPropertiesData, removeInfoTemplate } from "../shared/helpers";
+import { Data, Options, SourceParams, subComponentProps, TabComponentProps } from "src/models/tab-addon";
 import { Code, Meta } from "src/models/generic";
 import { HeadersTableProps } from "src/models/table";
 import { NoDataComponent } from "../components/error/no-data";
+import { getSource } from "../shared/extract-source";
 
 /**
  * Returns an object with an array for each table: events, methods and properties.
@@ -37,11 +38,15 @@ export const extractPropsFromElements = (
  * @param active - Render if active is true.
  */
 export const Tab: React.FC<TabComponentProps> = ({ active }) => {
-	let data: Data, headers: HeadersTableProps, code: Code, meta: Meta, subComponentData: any;
+	let data: Data, headers: HeadersTableProps, code: Code, meta: Meta, subComponentData: subComponentProps[] = [];
 	const state = useStorybookApi();
-	const currentStoryData: Story | Group = state.getCurrentStoryData();
+	const currentStoryData: any = state.getCurrentStoryData();
 	const parameters: any = state.getCurrentParameter();
-
+	const { source, locationsMap }: SourceParams = useParameter('storySource', {
+		source: 'loading source...',
+	});
+	const currentSource = getSource(currentStoryData);
+	
 	// Options
 	const options: Options = {dashCase: false};
 
@@ -50,25 +55,29 @@ export const Tab: React.FC<TabComponentProps> = ({ active }) => {
 			name: currentStoryData.name || null,
 			component: parameters.stencilDoc.component || null,
 			subComponent: parameters.stencilDoc.subComponent || null,
-			componentInfo: parameters.stencilDoc.componentInfo || null,
-			source: parameters.storySource && parameters.storySource.source || null,
+			componentInfo: '',
+			source: null,
 			args: parameters.args || null
 		};
-
 		data = extractPropsFromElements(meta.component, getStencilDocJson(), options);
 		headers = data && getHeaders(data);
+		meta.componentInfo = getInfo(currentSource);
+		meta.source = meta.componentInfo ? removeInfoTemplate(currentSource) : currentSource;
+
 		code = meta.source && getCode(meta.source.split('`')[1], meta.args);
 
-		if (meta.subComponent) {
-			const dataChild = extractPropsFromElements(meta.subComponent, getStencilDocJson(), options);
-			subComponentData = {
-				data: dataChild,
-				headers: getHeaders(dataChild),
-				meta: {
-					name: meta.subComponent || null,
-					component: meta.subComponent || null
-				}
-			};
+		if (meta.subComponent && Array.isArray(meta.subComponent)) {
+			meta.subComponent.forEach(element => {
+				let dataChild = extractPropsFromElements(element, getStencilDocJson(), options);
+				subComponentData.push({
+					data: dataChild,
+					headers: getHeaders(dataChild),
+					meta: {
+						name: element || null,
+						component: element || null
+					}
+				});
+			});
 		}
 	}
 

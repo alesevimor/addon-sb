@@ -22,9 +22,13 @@ const Row: React.FC<RowComponentProps> = ({ item }) => {
 	);
 };
 
+const tableStyle = {
+	width: "100%"
+};
+
 export const TableComponent: React.FC<TableComponentProps> = ({ headers, data }) => {
 	return (
-		<Table>
+		<Table style={tableStyle}>
 			<thead>
 				<tr>
 					{headers.map((text: string, idx: number) =>

@@ -1,0 +1,62 @@
+{
+  "name": "addon-stencil-doc",
+  "version": "1.0.0",
+  "description": "Generates the documentation page based on doc.json.",
+  "keywords": [
+    "stencil",
+    "webcomponent",
+    "stencil",
+    "webcomponent",
+    "storybook-addons"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alesevimor/addon-storybook"
+  },
+  "author": "Pelayo IT",
+  "license": "MIT",
+  "main": "dist/preset.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/ts/index.d.ts",
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "*.js",
+    "*.d.ts"
+  ],
+  "scripts": {},
+  "devDependencies": {},
+  "dependencies": {
+    "@storybook/addons": "^6.5.8",
+    "@storybook/api": "^6.5.8",
+    "@storybook/components": "^6.5.8",
+    "@storybook/core-events": "^6.5.8",
+    "@storybook/react": "^6.5.8",
+    "@storybook/source-loader": "^6.5.8",
+    "@storybook/theming": "^6.5.8",
+    "babel-loader": "^8.1.0"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "storybook": {
+    "displayName": "no",
+    "supportedFrameworks": [
+      "web-component",
+      "html"
+    ],
+    "icon": "https://user-images.githubusercontent.com/321738/63501763-88dbf600-c4cc-11e9-96cd-94adadc2fd72.png"
+  }
+}

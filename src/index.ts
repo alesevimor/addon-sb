@@ -1,5 +1,4 @@
 import { StencilJsonDocs } from './models/stencil-doc';
-import docJson from './docs.json';
 
 if (module && module.hot && module.hot.decline) {
   module.hot.decline();
@@ -11,7 +10,8 @@ if (module && module.hot && module.hot.decline) {
  */
 export const setStencilDocJson = (stencilDocJson: StencilJsonDocs): void => {
   // @ts-ignore
-  window.__STORYBOOK_STENCIL_DOC_JSON__ = stencilDocJson;
+  Object.assign(window, {__STORYBOOK_STENCIL_DOC_JSON__: stencilDocJson});
+  Object.assign(window.top, {__STORYBOOK_STENCIL_DOC_JSON__: stencilDocJson});
 };
 
 /**
@@ -22,8 +22,3 @@ export const getStencilDocJson = (): StencilJsonDocs => window.__STORYBOOK_STENC
 
 // make it work with --isolatedModules
 export default {};
-
-/**
- * Just use start-dev mode.
- */
-setStencilDocJson(docJson);

@@ -5,7 +5,7 @@ export interface SourceComponentProps {
 export interface Meta {
 	name: string;
 	component: string;
-	subComponent?: string;
+	subComponent?: string[];
 	componentInfo?: string;
 	source?: string;
 	args?: any;
